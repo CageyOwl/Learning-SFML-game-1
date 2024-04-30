@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "player.hpp"
 
 
 namespace sfgm {
@@ -10,6 +11,7 @@ public:
     Game();
     virtual ~Game();
 
+    bool attachPlayer(Player*);
     const bool isRunning() const;
 
     void update();
@@ -34,6 +36,7 @@ private:
     
     sf::Event event;
     sf::RenderWindow *renderWindow;
+    Player *player;
 
     void initWindow();
     void pollEvents();

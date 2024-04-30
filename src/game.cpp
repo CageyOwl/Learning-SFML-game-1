@@ -14,7 +14,7 @@ void Game::render()
 {
     this->renderWindow->clear();
     // Draws start
-
+    this->renderWindow->draw(*(this->player));     // TODO
     // Draws end
     this->renderWindow->display();
 }
@@ -23,7 +23,8 @@ void Game::render()
 
 Game::Game() :
     eventsHandler(this),
-    event()
+    event(),
+    player()
 {
     this->initWindow();
 }
@@ -43,6 +44,14 @@ void Game::initWindow()
     sf::VideoMode videoMode{ 1200, 800 };
     this->renderWindow = new sf::RenderWindow(videoMode, "SFML game", sf::Style::Close);
     this->renderWindow->setFramerateLimit(60);
+}
+
+bool Game::attachPlayer(sfgm::Player *player)
+{
+    this->player = player;
+    if (this->player)
+        return true;
+    return false;
 }
 
 const bool Game::isRunning() const
