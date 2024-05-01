@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include <iostream> // tmp
 
 
 namespace sfgm {
@@ -7,7 +6,7 @@ void Game::update()
 {
     this->pollEvents();
     // Other updates
-
+    this->player->update();
 }
 
 void Game::render()
@@ -98,21 +97,31 @@ void Game::EventsHandler::processEvent(const sf::Event & event) const
 
 void Game::EventsHandler::keyPress(sf::Keyboard::Key key) const
 {
-    std::cout << "The key " << key << " is pressed\n";
+    switch (key)
+    {
+    case sf::Keyboard::Escape:
+        this->owner->renderWindow->close();
+        break;
+    case sf::Keyboard::P:
+        this->owner->renderWindow->setActive(false);
+        break;
+    default:
+        break;
+    }
 }
 
 void Game::EventsHandler::keyRelease(sf::Keyboard::Key key) const
 {
-    std::cout << "The key " << key << " is released\n";
+
 }
 
 void Game::EventsHandler::mouseButtonPress(const sf::Mouse::Button btn) const
 {
-    std::cout << "The mouse button " << btn << " is pressed\n";
+
 }
 
 void Game::EventsHandler::mouseButtonRelease(const sf::Mouse::Button btn) const
 {
-    std::cout << "The mouse button " << btn << " is released\n";
+
 }
 }

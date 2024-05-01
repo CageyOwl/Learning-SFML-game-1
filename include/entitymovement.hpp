@@ -8,6 +8,8 @@ struct EntityMovementParams
 {
     sf::Vector2f speed;
     sf::Vector2f acceleration;
+    float maxSpeed;
+    float baseAcceleration;
 
     EntityMovementParams();
 };
