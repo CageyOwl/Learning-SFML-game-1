@@ -6,7 +6,7 @@ int main()
 {
     sfgm::Game game;
     sfgm::Player player;
-    ControlsScheme<sfgm::Player> controlsScheme(&sfgm::Player::dummyMethodPtr);
+    ControlsScheme<sfgm::Player::KeyBindableMethods> controlsScheme(&sfgm::Player::KeyBindableMethods::dummyMethod);
 
     player.attachControlsScheme(&controlsScheme);
     game.attachPlayer(&player);

@@ -28,10 +28,10 @@ private:
     private:
         Game *owner;
 
-        void keyPress(const sf::Keyboard::Key) const;
-        void keyRelease(const sf::Keyboard::Key) const;
-        void mouseButtonPress(const sf::Mouse::Button) const;
-        void mouseButtonRelease(const sf::Mouse::Button) const;
+        void keyPress(const sf::Event&) const;
+        void keyRelease(const sf::Event&) const;
+        void mouseButtonPress(const sf::Event&) const;
+        void mouseButtonRelease(const sf::Event&) const;
     } eventsHandler;
     
     sf::Event event;

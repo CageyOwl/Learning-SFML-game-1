@@ -6,10 +6,10 @@
 namespace sfgm {
 struct EntityMovementParams
 {
-    sf::Vector2f speed;
-    sf::Vector2f acceleration;
-    float maxSpeed;
-    float baseAcceleration;
+    sf::Vector2f baseAcceleration;
+    sf::Vector2f totalAcceleration, acceleration;
+    
+    sf::Vector2f speed, maxSpeed;
 
     EntityMovementParams();
 };

@@ -78,16 +78,16 @@ void Game::EventsHandler::processEvent(const sf::Event & event) const
     switch (event.type)
     {
         case sf::Event::KeyPressed:
-            this->keyPress(event.key.code);
+            this->keyPress(event);
             break;
         case sf::Event::KeyReleased:
-            this->keyRelease(event.key.code);
+            this->keyRelease(event);
             break;
         case sf::Event::MouseButtonPressed:
-            this->mouseButtonPress(event.mouseButton.button);
+            this->mouseButtonPress(event);
             break;
         case sf::Event::MouseButtonReleased:
-            this->mouseButtonRelease(event.mouseButton.button);
+            this->mouseButtonRelease(event);
             break;
         case sf::Event::Closed:
             this->owner->renderWindow->close();
@@ -95,9 +95,9 @@ void Game::EventsHandler::processEvent(const sf::Event & event) const
     }
 }
 
-void Game::EventsHandler::keyPress(sf::Keyboard::Key key) const
+void Game::EventsHandler::keyPress(const sf::Event &event) const
 {
-    switch (key)
+    switch (event.key.code)
     {
     case sf::Keyboard::Escape:
         this->owner->renderWindow->close();
@@ -106,21 +106,28 @@ void Game::EventsHandler::keyPress(sf::Keyboard::Key key) const
         this->owner->renderWindow->setActive(false);
         break;
     default:
-        break;
+        this->owner->player->processCommand(event);
     }
 }
 
-void Game::EventsHandler::keyRelease(sf::Keyboard::Key key) const
+void Game::EventsHandler::keyRelease(const sf::Event &event) const
+{
+    switch (event.key.code)
+    {
+        /*
+            TODO
+        */
+    default:
+        this->owner->player->processCommand(event);
+    }
+}
+
+void Game::EventsHandler::mouseButtonPress(const sf::Event &event) const
 {
 
 }
 
-void Game::EventsHandler::mouseButtonPress(const sf::Mouse::Button btn) const
-{
-
-}
-
-void Game::EventsHandler::mouseButtonRelease(const sf::Mouse::Button btn) const
+void Game::EventsHandler::mouseButtonRelease(const sf::Event &event) const
 {
 
 }
