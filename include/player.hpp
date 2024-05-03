@@ -30,12 +30,12 @@ public:
     } keyBindableMethods;
     void processCommand(const sf::Event&);
     
-    bool attachControlsScheme(ControlsScheme<Player::KeyBindableMethods> *const);
+    bool attachControls(ControlsManager<Player::KeyBindableMethods> *const);
 
 private:
     sf::CircleShape shape;
     EntityMovementParams moveParams;
-    ControlsScheme<Player::KeyBindableMethods> *controlsScheme;
+    ControlsManager<Player::KeyBindableMethods> *controlsManager;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

@@ -27,7 +27,7 @@ Player::Player(const sf::Vector2f &baseAcceleration) :
     shape{ 20.0 },     // TODO
     moveParams(),
     keyBindableMethods(this),
-    controlsScheme{ new ControlsScheme<sfgm::Player::KeyBindableMethods>(&sfgm::Player::KeyBindableMethods::dummyMethod) }
+    controlsManager{ new ControlsManager<sfgm::Player::KeyBindableMethods>(&sfgm::Player::KeyBindableMethods::dummyMethod) }
 {
     this->shape.setPosition(40, 40);
     this->setDefaultControls();
@@ -43,14 +43,14 @@ void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(this->shape, states);
 }
 
-bool Player::attachControlsScheme(ControlsScheme<Player::KeyBindableMethods> *const controlsScheme)
+bool Player::attachControls(ControlsManager<Player::KeyBindableMethods> *const controlsManager)
 {
     /*
         TODO
     */
-    if (this->controlsScheme != controlsScheme && controlsScheme)
+    if (this->controlsManager != controlsManager && controlsManager)
     {
-        this->controlsScheme = controlsScheme;
+        this->controlsManager = controlsManager;
         this->setDefaultControls();
         return true;
     }
@@ -59,15 +59,15 @@ bool Player::attachControlsScheme(ControlsScheme<Player::KeyBindableMethods> *co
 
 void Player::setDefaultControls()
 {
-    this->controlsScheme->setKeyPressBinding(sf::Keyboard::A, &Player::KeyBindableMethods::startAccelerationLeft);
-    this->controlsScheme->setKeyPressBinding(sf::Keyboard::D, &Player::KeyBindableMethods::startAccelerationRight);
-    this->controlsScheme->setKeyReleaseBinding(sf::Keyboard::A, &Player::KeyBindableMethods::stopAccelerationX);
-    this->controlsScheme->setKeyReleaseBinding(sf::Keyboard::D, &Player::KeyBindableMethods::stopAccelerationX);
+    this->controlsManager->setKeyPressBinding(sf::Keyboard::A, &Player::KeyBindableMethods::startAccelerationLeft);
+    this->controlsManager->setKeyPressBinding(sf::Keyboard::D, &Player::KeyBindableMethods::startAccelerationRight);
+    this->controlsManager->setKeyReleaseBinding(sf::Keyboard::A, &Player::KeyBindableMethods::stopAccelerationX);
+    this->controlsManager->setKeyReleaseBinding(sf::Keyboard::D, &Player::KeyBindableMethods::stopAccelerationX);
 }
 
 void Player::processCommand(const sf::Event& event)
 {
-    ((this->keyBindableMethods).*(this->controlsScheme->getBinding(event)))();
+    ((this->keyBindableMethods).*(this->controlsManager->getBinding(event)))();
 }
 
 Player::KeyBindableMethods::KeyBindableMethods(Player *const owner)

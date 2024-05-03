@@ -15,11 +15,11 @@ template<typename Owner_T>
 using MethodPtr = void (Owner_T::*)(void);
 
 template<typename Owner_T>
-class ControlsScheme
+class ControlsManager
 {
 public:
-    ControlsScheme(const MethodPtr<Owner_T> dummyMethodPtr);
-    ~ControlsScheme();
+    ControlsManager(const MethodPtr<Owner_T> dummyMethodPtr);
+    ~ControlsManager();
 
     const MethodPtr<Owner_T> getBinding(const sf::Event&) const;
 
@@ -29,6 +29,9 @@ public:
     void setMouseButtonReleaseBinding(const sf::Mouse::Button, const MethodPtr<Owner_T>);
 
 private:
+    // TODO
+    // std::vector<sf::Keyboard::Key, /* combinations */> ;
+
     std::vector<MethodPtr<Owner_T>> keyPressControls;
     std::vector<MethodPtr<Owner_T>> keyReleaseControls;
     std::vector<MethodPtr<Owner_T>> mouseButtonPressControls;
@@ -36,45 +39,45 @@ private:
     static uint64_t instantiationsCount;
     const uint64_t id;
 
-    const MethodPtr<Owner_T> getKeyBinding(const sf::Keyboard::Key, const sf::Event::EventType) const;
-    const MethodPtr<Owner_T> getMouseBinding(const sf::Mouse::Button, const sf::Event::EventType) const;
+    const MethodPtr<Owner_T> getKeyBinding(const sf::Event::EventType, const sf::Keyboard::Key) const;
+    const MethodPtr<Owner_T> getMouseBinding(const sf::Event::EventType, const sf::Mouse::Button) const;
 };
-template<typename Owner_T> uint64_t ControlsScheme<Owner_T>::instantiationsCount{ 0 };
+template<typename Owner_T> uint64_t ControlsManager<Owner_T>::instantiationsCount{ 0 };
 
 //============================================================================================================
 
 template<typename Owner_T>
-ControlsScheme<Owner_T>::ControlsScheme(const MethodPtr<Owner_T> dummyMethodPtr) :
+ControlsManager<Owner_T>::ControlsManager(const MethodPtr<Owner_T> dummyMethodPtr) :
     keyPressControls(KEYS_NUMBER, dummyMethodPtr),
     keyReleaseControls(KEYS_NUMBER, dummyMethodPtr),
     mouseButtonPressControls(MOUSE_BUTTONS_NUMBER, dummyMethodPtr),
     mouseButtonReleaseControls(MOUSE_BUTTONS_NUMBER, dummyMethodPtr),
-    id(ControlsScheme::instantiationsCount++)
+    id(ControlsManager::instantiationsCount++)
 {
 }
 
 template<typename Owner_T>
-ControlsScheme<Owner_T>::~ControlsScheme()
+ControlsManager<Owner_T>::~ControlsManager()
 {
 }
 
 template<typename Owner_T>
-const MethodPtr<Owner_T> ControlsScheme<Owner_T>::getBinding(const sf::Event &event) const
+const MethodPtr<Owner_T> ControlsManager<Owner_T>::getBinding(const sf::Event &event) const
 {
     switch (event.type)
     {
         case sf::Event::KeyPressed:
         case sf::Event::KeyReleased:
-            return this->getKeyBinding(event.key.code, event.type);
+            return this->getKeyBinding(event.type, event.key.code);
         case sf::Event::MouseButtonPressed:
         case sf::Event::MouseButtonReleased:
-            return this->getMouseBinding(event.mouseButton.button, event.type);
+            return this->getMouseBinding(event.type, event.mouseButton.button);
 
     }
 }
 
 template<typename Owner_T>
-const MethodPtr<Owner_T> ControlsScheme<Owner_T>::getKeyBinding(const sf::Keyboard::Key key, const sf::Event::EventType eventType) const
+const MethodPtr<Owner_T> ControlsManager<Owner_T>::getKeyBinding(const sf::Event::EventType eventType, const sf::Keyboard::Key key) const
 {
     switch (eventType)
     {
@@ -86,7 +89,7 @@ const MethodPtr<Owner_T> ControlsScheme<Owner_T>::getKeyBinding(const sf::Keyboa
 }
 
 template<typename Owner_T>
-const MethodPtr<Owner_T> ControlsScheme<Owner_T>::getMouseBinding(const sf::Mouse::Button btn, const sf::Event::EventType eventType) const
+const MethodPtr<Owner_T> ControlsManager<Owner_T>::getMouseBinding(const sf::Event::EventType eventType, const sf::Mouse::Button btn) const
 {
     switch (eventType)
     {
@@ -98,22 +101,22 @@ const MethodPtr<Owner_T> ControlsScheme<Owner_T>::getMouseBinding(const sf::Mous
 }
 
 template<typename Owner_T>
-void ControlsScheme<Owner_T>::setKeyPressBinding(const sf::Keyboard::Key key, const MethodPtr<Owner_T> methodPtr)
+void ControlsManager<Owner_T>::setKeyPressBinding(const sf::Keyboard::Key key, const MethodPtr<Owner_T> methodPtr)
 {
     this->keyPressControls[key] = methodPtr;
 }
 template<typename Owner_T>
-void ControlsScheme<Owner_T>::setKeyReleaseBinding(const sf::Keyboard::Key key, const MethodPtr<Owner_T> methodPtr)
+void ControlsManager<Owner_T>::setKeyReleaseBinding(const sf::Keyboard::Key key, const MethodPtr<Owner_T> methodPtr)
 {
     this->keyReleaseControls[key] = methodPtr;
 }
 template<typename Owner_T>
-void ControlsScheme<Owner_T>::setMouseButtonPressBinding(const sf::Mouse::Button btn, const MethodPtr<Owner_T> methodPtr)
+void ControlsManager<Owner_T>::setMouseButtonPressBinding(const sf::Mouse::Button btn, const MethodPtr<Owner_T> methodPtr)
 {
     this->mouseButtonPressControls[btn] = methodPtr;
 }
 template<typename Owner_T>
-void ControlsScheme<Owner_T>::setMouseButtonReleaseBinding(const sf::Mouse::Button btn, const MethodPtr<Owner_T> methodPtr)
+void ControlsManager<Owner_T>::setMouseButtonReleaseBinding(const sf::Mouse::Button btn, const MethodPtr<Owner_T> methodPtr)
 {
     this->mouseButtonReleaseControls[btn] = methodPtr;
 }
