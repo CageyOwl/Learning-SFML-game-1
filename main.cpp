@@ -6,9 +6,9 @@ int main()
 {
     sfgm::Game game;
     sfgm::Player player;
-    ControlsManager<sfgm::Player::KeyBindableMethods> ControlsManager(&sfgm::Player::KeyBindableMethods::dummyMethod);
+    ControlsManager<sfgm::Player::KeyBindableMethods> controlsManager(&sfgm::Player::KeyBindableMethods::dummyMethod);
 
-    player.attachControls(&ControlsManager);
+    player.attachControls(&controlsManager);
     game.attachPlayer(&player);
 
     while (game.isRunning())
